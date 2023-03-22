@@ -8,6 +8,8 @@ Android developers can tyr it to find data path from source to sink.
 
 ```
 
+<img src="C:\DroidPatrol\DroidPatrol2\img.png"/>
+
 ### How it works
 ```
 DroidPatrol 2.0 is upgraded to support Kotlin code analysis.
@@ -24,7 +26,5 @@ sinks are added in a text file in this project and uploaded here.
 To perform analysis developers has to pass the directory i.e c/d
 drive name where the analyzer.jar and android.jar takes place.
 
-![](C:\DroidPatrol\DroidPatrol2\img.png)
-
-Please try it and any contribution to this project is always welcome.
+Try DroidPatrol 2.0 and any contribution to this project is always welcome.
 ```
