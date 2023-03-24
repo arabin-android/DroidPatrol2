@@ -1,9 +1,9 @@
 ### License
 ```
-   Copyright (C) 2023 Arabin
+Copyright (C) 2023 Arabin
 
 DroidPtrol 2.0 is an open source plugin for Android studio 
-for tainted data flow analysis. Inspired by FlowDroid.
+to do tainted data flow analysis in Application. DroidPatrol is build on top of Flowdroid.
 Android developers can tyr it to find data path from source to sink.
 
 ```
@@ -13,7 +13,7 @@ Android developers can tyr it to find data path from source to sink.
 ### How it works
 ```
 DroidPatrol 2.0 is upgraded to support Kotlin code analysis.
-It also supports AndroidX and Dependency Injection analysis.
+It also supports AndroidX and Dependency Injection i.e., Dagger2, Hilt realted code analysis.
 DroidPatrol is developed based on soot and jimple. We are inspired
 by Flowdroid (https://github.com/secure-software-engineering/FlowDroid)
 to build this plugin to perform data flow analysis.
