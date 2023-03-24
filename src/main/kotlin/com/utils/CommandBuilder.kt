@@ -16,21 +16,19 @@ class CommandBuilder private constructor(
     val sourceSinkPath: String?
 ){
 
-    class Builder {
-        private var basePath : String? = null
+    class Builder(private val basePath: String?) {
         private var analyzer: String? = null
         private var androidJar: String? = null
 
-        fun setBasePath(basePath: String?) = apply { this.basePath = basePath }
         fun setAnalyzerPath(analyzerPath: String) = apply { this.analyzer = analyzerPath }
         fun setAndroidJarPath(androidJarPath: String) = apply { this.androidJar = androidJarPath }
 
         fun build() = CommandBuilder(analyzer, androidJar, basePath+AppMacros.APK_PATH,
-            basePath+AppMacros.SOURCE_SINKS)
+            basePath+"/"+AppMacros.SOURCE_SINKS)
 
     }
 
-    fun createCommand(): String{
+    fun createAnalysisCommand(): String{
         return "java -jar $analyzer -a $debugApkPath -p $androidJar -s $sourceSinkPath"
     }
 

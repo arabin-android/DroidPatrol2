@@ -7,6 +7,7 @@ import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.Messages
 import com.utils.AppMacros
 import com.utils.CommandBuilder
+import com.utils.FileCheckHelper
 import com.utils.Helper
 import java.io.*
 import java.util.*
@@ -18,34 +19,33 @@ import java.util.*
  * An action that performs data flow analysis
  * uses soot and jimple for analyze kotlin code
  * */
-class AnalyzeAction : DumbAwareAction("Analyze") {
+class AnalyzeAction : DumbAwareAction("Analyze"), FileCheckHelper.IPassChecks {
+
+    private var mProject: Project? = null
+
     override fun actionPerformed(e: AnActionEvent) {
-        val project = e.getData(PlatformDataKeys.PROJECT)
+        mProject = e.project
         val location = Messages.showInputDialog(
-            project, AppMacros.DRIVE_LOCATION, AppMacros.DRIVE_TITLE, Messages.getQuestionIcon()
+            e.getData(PlatformDataKeys.PROJECT), AppMacros.DRIVE_LOCATION, AppMacros.DRIVE_TITLE, Messages.getQuestionIcon()
         )
-        val helper = Helper(location, e.project?.basePath)
-        if (!helper.isDirectory()){
-            project?.let { helper.showAlertDialog(it, AppMacros.NOT_DIRECTORY, AppMacros.DIRECTORY_TITLE) }
-            return
-        }
-        if (helper.getApk() == null) {
-            project?.let { helper.showAlertDialog(it, AppMacros.NO_APK_ERROR, AppMacros.ERROR_TITLE) }
-            return
-        }
-        location?.let { analysisApk(e.project, it) }
+        val fileCheckHelper = FileCheckHelper(this, e.project?.basePath, location)
+
+        fileCheckHelper.checkApk()
+        fileCheckHelper.isDirectory()
+        fileCheckHelper.checkSourceSink()
+
+        location?.let { analysisApk(it) }
     }
 
-    private fun analysisApk(project: Project?, location: String) {
-        val helper = Helper(location, project?.basePath)
-        val commandBuilder = CommandBuilder.Builder()
+    private fun analysisApk(location: String) {
+        val helper = Helper(location, mProject?.basePath)
+        val commandBuilder = CommandBuilder.Builder(mProject?.basePath)
             .setAnalyzerPath(helper.getSootPath())
             .setAndroidJarPath(helper.getAndroidJar())
-            .setBasePath(project?.basePath)
             .build()
 
-        val builder = helper.getProcess(commandBuilder.createCommand())
-            .directory(project?.basePath?.let { File(it) })
+        val builder = helper.getProcess(commandBuilder.createAnalysisCommand())
+            .directory(mProject?.basePath?.let { File(it) })
         builder.redirectErrorStream(true)
         var p: Process? = null
         try {
@@ -57,7 +57,7 @@ class AnalyzeAction : DumbAwareAction("Analyze") {
         var line: String?
         var leaksText = ""
         val text = StringBuilder()
-        project?.let { helper.showAlertDialog(it, AppMacros.ANALYSIS_ON_PROGRESS, AppMacros.ANALYSIS_PROGRESS_TITLE) }
+        showAlertDialog(AppMacros.ANALYSIS_ON_PROGRESS, AppMacros.ANALYSIS_PROGRESS_TITLE)
         while (true) {
             try {
                 line = r?.readLine()
@@ -85,10 +85,36 @@ class AnalyzeAction : DumbAwareAction("Analyze") {
                 sb.append(sc.nextLine())
                 sb.append("\n")
             }
-            Messages.showMessageDialog(project, text.toString(), AppMacros.ANALYSIS_REPORT, Messages.getInformationIcon())
+            showAlertDialog(text.toString(), AppMacros.ANALYSIS_REPORT)
         } else {
-            Messages.showMessageDialog(project, leaksText, AppMacros.ANALYSIS_REPORT, Messages.getInformationIcon())
+            showAlertDialog(leaksText, AppMacros.ANALYSIS_REPORT)
         }
+    }
+
+    override fun onSuccess(aCheckType: FileCheckHelper.CHECK_TYPE) {}
+
+    override fun onFailed(aCheckType: FileCheckHelper.CHECK_TYPE, message: String) {
+        var errorTitle : String? = null
+        errorTitle = when(aCheckType){
+            FileCheckHelper.CHECK_TYPE.IS_SOURCE_SINK_AVAILABLE->{
+                AppMacros.NO_SOURCE_SINK_TITLE
+            }
+
+            FileCheckHelper.CHECK_TYPE.IS_VALID_APK->{
+                AppMacros.ERROR_TITLE
+            }
+
+            FileCheckHelper.CHECK_TYPE.IS_DIRECTORY->{
+                AppMacros.DIRECTORY_TITLE
+            }
+        }
+        showAlertDialog(message, errorTitle)
+    }
+
+    private fun showAlertDialog(message: String, title: String){
+        Messages.showMessageDialog(
+            mProject, message, title, Messages.getInformationIcon()
+        )
     }
 
 }

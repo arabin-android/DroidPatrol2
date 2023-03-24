@@ -43,11 +43,6 @@ class Helper(private val location: String?, private val basePath: String?) {
         }
     }
 
-    fun isDirectory(): Boolean{
-        val directory = File("$location:/")
-        return directory.isDirectory
-    }
-
     fun getSootPath(): String{
         val baseDirectory = File("$location:/")
         val findFile = FindFile(AppMacros.ANALYZER, baseDirectory, 6)
@@ -55,22 +50,10 @@ class Helper(private val location: String?, private val basePath: String?) {
         return analyserFile.toString()
     }
 
-    fun getApk(): File?{
-        val apkDirectory = File(basePath+AppMacros.DEBUG_APK_DIRECTORY)
-        val findFile = FindFile(AppMacros.APK_FILE, apkDirectory, 6)
-        return findFile.find()
-    }
-
     fun getAndroidJar(): String{
         val baseDirectory = File("$location:/")
         val findFile = FindFile(AppMacros.ANDROID_JAR, baseDirectory, 6)
         return findFile.find().toString()
-    }
-
-    fun showAlertDialog(project: Project, message: String, title: String){
-        Messages.showMessageDialog(
-            project, message, title, Messages.getInformationIcon()
-        )
     }
 
     fun getProcess(command: String): ProcessBuilder{

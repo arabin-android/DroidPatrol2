@@ -12,7 +12,7 @@ class AppMacros {
         const val DRIVE_LOCATION = "Please Enter the Drive name for analyzer.jar and android.jar !!!"
         const val DRIVE_TITLE = "Library path"
         const val ANALYZER = "analyzer.jar"
-        const val SOURCE_SINKS = "/SourcesAndSinks.txt"
+        const val SOURCE_SINKS = "SourcesAndSinks.txt"
         const val SOURCE_NAME = "Please Enter the Source name: "
         const val SOURCE_TITLE = "Sources"
         const val SINK_NAME = "Please Enter the Sink name: "
@@ -30,6 +30,8 @@ class AppMacros {
         const val PROCESS_CALLED_WTH = "was called with values from the following sources:"
         const val ANALYSIS_REPORT = "Analysis report"
         const val TAG_LEAKS = "leaks"
+        const val SOURCE_SINK_MISSING = "No source sinks available"
+        const val NO_SOURCE_SINK_TITLE = "No source sinks"
     }
 
 }
