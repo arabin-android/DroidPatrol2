@@ -8,7 +8,7 @@ Android developers can tyr it to find data path from source to sink.
 
 ```
 
-<img src="C:\DroidPatrol\DroidPatrol2\img.png"/>
+<img src="https://github.com/arabin-android/DroidPatrol2/blob/master/img.png"/>
 
 ### How it works
 ```
