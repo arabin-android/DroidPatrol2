@@ -4,7 +4,7 @@ import java.io.File
 
 class FileCheckHelper(private val aIPassChecks: IPassChecks, private val basePath: String?, private val location: String?) {
 
-    fun isDirectory(){
+    fun checkDirectory(){
         val directory = File("$location:/")
         if (directory.isDirectory){
             aIPassChecks.onSuccess(CHECK_TYPE.IS_DIRECTORY)

@@ -28,3 +28,11 @@ drive name where the analyzer.jar and android.jar takes place.
 
 Try DroidPatrol 2.0 and any contribution to this project is always welcome.
 ```
+
+
+### DroidPatrol 2.0 Architecture
+    
+    The follwing image shows the architecture of DroidPatrol 2.0
+```
+
+<img src="https://github.com/arabin-android/DroidPatrol2/blob/master/DroidPatrol 2.0_Architecture.png"/>

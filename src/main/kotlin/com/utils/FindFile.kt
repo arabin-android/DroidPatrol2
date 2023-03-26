@@ -15,6 +15,13 @@ import java.util.concurrent.atomic.AtomicLong
  * An utility class to find file in windows PC
  * */
 class FindFile(private val filename: String, private val baseDir: File, private val concurrency: Int) {
+
+
+    private val count: AtomicLong = AtomicLong(0)
+    companion object {
+        private val POISONPILL = File("")
+    }
+
     private class RunnableDirSearch(
         private val dirQueue: BlockingQueue<File>,
         private val fileQueue: BlockingQueue<File>,
@@ -57,7 +64,7 @@ class FindFile(private val filename: String, private val baseDir: File, private 
                 try {
                     dirQueue.put(POISONPILL)
                 } catch (e: InterruptedException) {
-                    // empty
+                    e.printStackTrace()
                 }
             }
         }
@@ -89,13 +96,12 @@ class FindFile(private val filename: String, private val baseDir: File, private 
                 try {
                     dirQueue.put(POISONPILL)
                 } catch (e: InterruptedException) {
-                    // empty
+                    e.printStackTrace()
                 }
             }
         }
     }
 
-    private val count: AtomicLong = AtomicLong(0)
 
     fun find(): File? {
         val ex = Executors.newFixedThreadPool(concurrency + 1)
@@ -116,7 +122,4 @@ class FindFile(private val filename: String, private val baseDir: File, private 
         }
     }
 
-    companion object {
-        private val POISONPILL = File("")
-    }
 }

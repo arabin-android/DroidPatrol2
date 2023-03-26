@@ -31,13 +31,13 @@ class AnalyzeAction : DumbAwareAction("Analyze"), FileCheckHelper.IPassChecks {
         val fileCheckHelper = FileCheckHelper(this, e.project?.basePath, location)
 
         fileCheckHelper.checkApk()
-        fileCheckHelper.isDirectory()
+        fileCheckHelper.checkDirectory()
         fileCheckHelper.checkSourceSink()
 
-        location?.let { analysisApk(it) }
+        location?.let { analyzeApk(it) }
     }
 
-    private fun analysisApk(location: String) {
+    private fun analyzeApk(location: String) {
         val helper = Helper(location, mProject?.basePath)
         val commandBuilder = CommandBuilder.Builder(mProject?.basePath)
             .setAnalyzerPath(helper.getSootPath())
