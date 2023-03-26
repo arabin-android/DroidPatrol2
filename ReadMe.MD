@@ -35,4 +35,4 @@ Try DroidPatrol 2.0 and any contribution to this project is always welcome.
     The follwing image shows the architecture of DroidPatrol 2.0
 ```
 
-<img src="https://github.com/arabin-android/DroidPatrol2/blob/master/DroidPatrol 2.0_Architecture.png"/>
+<img src="https://github.com/arabin-android/DroidPatrol2/blob/master/DroidPatrol%202.0_Architecture.png"/>
