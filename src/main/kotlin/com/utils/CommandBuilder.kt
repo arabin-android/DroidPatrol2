@@ -10,10 +10,10 @@ package com.utils
  * designed with builder pattern
  * */
 class CommandBuilder private constructor(
-    val analyzer: String?,
-    val androidJar: String?,
-    val debugApkPath: String?,
-    val sourceSinkPath: String?
+    private val analyzer: String?,
+    private val androidJar: String?,
+    private val debugApkPath: String?,
+    private val sourceSinkPath: String?
 ){
 
     class Builder(private val basePath: String?) {

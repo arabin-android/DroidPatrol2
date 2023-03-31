@@ -22,19 +22,15 @@ import java.util.*
 class AnalyzeAction : DumbAwareAction("Analyze"), FileCheckHelper.IPassChecks {
 
     private var mProject: Project? = null
+    private var fileCheckHelper: FileCheckHelper? = null
 
     override fun actionPerformed(e: AnActionEvent) {
         mProject = e.project
         val location = Messages.showInputDialog(
             e.getData(PlatformDataKeys.PROJECT), AppMacros.DRIVE_LOCATION, AppMacros.DRIVE_TITLE, Messages.getQuestionIcon()
         )
-        val fileCheckHelper = FileCheckHelper(this, e.project?.basePath, location)
-
-        fileCheckHelper.checkApk()
-        fileCheckHelper.checkDirectory()
-        fileCheckHelper.checkSourceSink()
-
-        location?.let { analyzeApk(it) }
+        fileCheckHelper = FileCheckHelper(this, e.project?.basePath, location)
+        fileCheckHelper?.checkApk()
     }
 
     private fun analyzeApk(location: String) {
@@ -91,7 +87,21 @@ class AnalyzeAction : DumbAwareAction("Analyze"), FileCheckHelper.IPassChecks {
         }
     }
 
-    override fun onSuccess(aCheckType: FileCheckHelper.CHECK_TYPE) {}
+    override fun onSuccess(aCheckType: FileCheckHelper.CHECK_TYPE) {
+        when(aCheckType){
+            FileCheckHelper.CHECK_TYPE.IS_SOURCE_SINK_AVAILABLE->{
+                fileCheckHelper?.getLocation()?.let { analyzeApk(it) }
+            }
+
+            FileCheckHelper.CHECK_TYPE.IS_VALID_APK->{
+                fileCheckHelper?.checkDirectory()
+            }
+
+            FileCheckHelper.CHECK_TYPE.IS_DIRECTORY->{
+                fileCheckHelper?.checkSourceSink()
+            }
+        }
+    }
 
     override fun onFailed(aCheckType: FileCheckHelper.CHECK_TYPE, message: String) {
         var errorTitle : String? = null

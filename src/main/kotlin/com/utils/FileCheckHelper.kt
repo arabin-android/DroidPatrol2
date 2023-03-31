@@ -2,7 +2,13 @@ package com.utils
 
 import java.io.File
 
-class FileCheckHelper(private val aIPassChecks: IPassChecks, private val basePath: String?, private val location: String?) {
+class FileCheckHelper(private val aIPassChecks: IPassChecks,
+                      private val basePath: String?, private val location: String?) {
+
+
+    fun getLocation(): String?{
+        return location
+    }
 
     fun checkDirectory(){
         val directory = File("$location:/")
