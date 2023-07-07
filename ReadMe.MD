@@ -30,8 +30,3 @@ Try DroidPatrol 2.0 and any contribution to this project is always welcome.
 ```
 
 <img src="https://github.com/arabin-android/DroidPatrol2/blob/master/architechture.png"/>
-
-### DroidPatrol 2.0 Architecture
-    
-    See the architecture shown above.
-```
